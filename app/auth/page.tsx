@@ -2,11 +2,14 @@
 
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import clsx from "clsx";
+import { notosansjp } from "@/fonts";
 
 type AuthProps = {
   email: string;
   owner: string;
-  currency: string
+  currency: string;
+  referral_code?: string;
 };
 
 function Auth() {
@@ -20,30 +23,29 @@ function Auth() {
   const onSubmit = async (data: AuthProps) => {
     data.currency = "YEN";
     try {
-       const response = await fetch("http://localhost:4000/accounts", {
+      const response = await fetch("http://localhost:4000/accounts", {
         method: "POST",
-        headers:{
-            "Content-Type": "application/json"
+        headers: {
+          "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(data)
-       }) 
+        body: JSON.stringify(data),
+      });
 
-       if (!response.ok) {
-            console.error(">>> ERROR CALLING API")
-       }
-       const result = await response.json();
-       console.log(result)
-
+      if (!response.ok) {
+        console.error(">>> ERROR CALLING API");
+      }
+      const result = await response.json();
+      console.log(result);
     } catch (error) {
-        console.log(error)
+      console.log(error);
     }
   };
 
   return (
     <>
       <nav className="w-full h-[60px] bg-[#eeff00]"></nav>
-      <main className="flex w-full min-h-screen p-6 items-center justify-center">
+      <main className={clsx( notosansjp.className ,"flex w-full min-h-screen p-6 items-center justify-center")}>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col flex-1 justify-between w-full h-[600px] border-2 border-gray-900"
@@ -56,7 +58,7 @@ function Auth() {
             )}
             <input
               className="w-full h-[60px] border-2 border-t-0 border-l-0 border-r-0 border-gray-900 px-3 focus:outline-none"
-              placeholder="Name"
+              placeholder="お名前"
               {...register("owner", { required: "必須" })}
             />
 
@@ -67,7 +69,7 @@ function Auth() {
             )}
             <input
               className="w-full h-[60px] border-2 border-t-0 border-l-0 border-r-0 border-gray-900 px-3 focus:outline-none"
-              placeholder="Email"
+              placeholder="メール"
               {...register("email", {
                 required: "必須",
                 pattern: {
@@ -76,10 +78,22 @@ function Auth() {
                 },
               })}
             />
+            <input
+              className="w-full h-[60px] border-2 border-t-0 border-l-0 border-r-0 border-gray-900 px-3 focus:outline-none"
+              placeholder="コード入力"
+              {...register("referral_code", {
+              })}
+            />
 
             <button className="w-full h-[60px] border-2 border-gray-900 hover:bg-[#eeff00]">
-              CREATE
+              口座開設
             </button>
+            <span
+              className="hover:text-blue-500 underline"
+              onClick={() => router.push("/auth/login")}
+            >
+              ログイン
+            </span>
           </div>
           <div className="flex items-center justify-center w-full h-[50px] bg-black">
             <span className="text-white text-3xl">銀行</span>

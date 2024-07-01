@@ -66,7 +66,7 @@ function Login() {
             )}
             <input
               className="w-full h-[60px] border-2 border-t-0 border-l-0 border-r-0 border-gray-900 px-3 focus:outline-none"
-              placeholder="Email"
+              placeholder="メール"
               {...register("email", {
                 required: "必須",
                 pattern: {
@@ -77,7 +77,7 @@ function Login() {
             />
 
             <button className="w-full h-[60px] border-2 border-gray-900 hover:bg-[#eeff00]">
-              LOGIN
+              ログイン
             </button>
             {
                 serverErrors && serverErrors.map((error, index) => (
