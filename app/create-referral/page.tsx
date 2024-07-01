@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 function CreateReferral() {
   const [code, setCode] = useState<string>("");
-  const [user, setUser] = useState<number>(1);
+  const [user, setUser] = useState<number>();
   const [copied, setCopied] = useState<boolean>(false);
   const router = useRouter();
 
@@ -44,9 +44,15 @@ function CreateReferral() {
   }
 
   useEffect(() => {
+    const current_user = localStorage.getItem("current_user");
+    if (current_user) {
+      setUser(Number(current_user));
+    }
+
     if (!code) {
       return;
     }
+
   }, [code]);
 
   async function handleCopy() {

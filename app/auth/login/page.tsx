@@ -2,7 +2,7 @@
 
 import { FieldError, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Server } from "http";
 
 type LoginProps = {
@@ -38,6 +38,10 @@ function Login() {
       }
       const result = await response.json();
       if (result && result !== "email does not exist") {
+        if (localStorage.getItem("current_user")) {
+            localStorage.removeItem("current_user");
+        }
+        localStorage.setItem("current_user", result.id)
         router.push("/create-referral")
       }
 
