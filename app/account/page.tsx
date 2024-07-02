@@ -9,9 +9,9 @@ interface Account {
   id: number;
   owner: string;
   email: string;
-  extraInterest: number;
-  extraInterestStartDate: string;
-  extraInterestDuration: number;
+  extra_interest: {Float64: number, Valid: boolean};
+  extra_interest_start_date: {Time: string, Valid: boolean};
+  extra_interest_durtaion: number;
   interest: number;
   balance: number;
   currency: string;
@@ -22,6 +22,32 @@ function Account() {
   const router = useRouter();
   const [account, setAccount] = useState<Account>();
   const [user, setUser] = useState<number>();
+
+  async function refreshExtraInterest() {
+    try {
+       const response = await fetch(
+         `http://localhost:4000/referral/calculate/${user}`,
+         {
+           method: "GET",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           credentials: "include",
+         }
+       ); 
+
+       if (!response.ok) {
+            console.log(">>> ERROR CALLING API...")
+            return
+       }
+       const result = await response.json();
+       console.log("extra intereste calculated ", result);
+       setUser(result.id);
+       setAccount(result);
+    } catch (error) {
+       console.error(error); 
+    }
+  }
 
   useEffect(() => {
     const current_user = localStorage.getItem("current_user");
@@ -54,7 +80,7 @@ function Account() {
     }
 
     fetchAccount();
-  }, [user]);
+  }, [user]); 
 
   return (
     <>
@@ -89,10 +115,11 @@ function Account() {
             </div>
             <div>
               <span className="text-sm font-bold">お友達紹介による利息</span>
-              <div className="flex w-full h-[60px] bg-[#eeff00] border border-gray-900 p-2">
+              <div className="flex w-full h-[60px] items-center justify-between bg-[#eeff00] border border-gray-900 p-2">
                 <span className="text-2xl font-bold">
-                  {!account?.extraInterest ? "0" : account.extraInterest}
+                  {!account?.extra_interest.Float64 ? "0" : account.extra_interest.Float64}
                 </span>
+                <p onClick={refreshExtraInterest} className="text-xs px-1 py-1 rounded-full bg-gray-900 text-[#eeff00]">refresh</p>
               </div>
             </div>
             <div>
@@ -100,8 +127,8 @@ function Account() {
                 extra interest will start from
               </span>
               <div className="flex w-full h-[60px] bg-[#eeff00] border border-gray-900 p-2">
-                <span className="text-2xl font-bold">
-                  {!account?.extraInterestStartDate ? (
+                <span className="flex text-xl font-bold items-center">
+                  {!account?.extra_interest_start_date.Time ? (
                     <p
                       className="underline animate-pulse"
                       onClick={() => router.push("/create-referral")}
@@ -109,7 +136,7 @@ function Account() {
                       紹介しよう
                     </p>
                   ) : (
-                    account.extraInterestStartDate
+                    account.extra_interest_start_date.Time
                   )}
                 </span>
               </div>
