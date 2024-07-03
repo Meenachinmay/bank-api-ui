@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { notosansjp } from "@/fonts";
 
+import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
+
 type AuthProps = {
   email: string;
   owner: string;
@@ -22,8 +25,9 @@ function Auth() {
 
   const onSubmit = async (data: AuthProps) => {
     data.currency = "YEN";
+    const loaderID = toast.loading("読み込み中");
     try {
-      const response = await fetch(`http://134.209.251.201:8080/accounts`, {
+      const response = await fetch(`https://mahitech.org/accounts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,10 +37,17 @@ function Auth() {
       });
 
       if (!response.ok) {
-        console.error(">>> ERROR CALLING API");
+        toast.dismiss(loaderID);
+        toast.error("アカウント作成エラー");
+        return;
       }
+
+      // Dismiss the loading toast and show a success toast
+      toast.dismiss(loaderID);
       const result = await response.json();
-      console.log(result);
+      toast.success("口座開設できたました。", {
+        position: "top-center",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -45,7 +56,12 @@ function Auth() {
   return (
     <>
       <nav className="w-full h-[60px] bg-[#eeff00]"></nav>
-      <main className={clsx( notosansjp.className ,"flex w-full min-h-screen p-6 items-center justify-center")}>
+      <main
+        className={clsx(
+          notosansjp.className,
+          "flex w-full min-h-screen p-6 items-center justify-center"
+        )}
+      >
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col flex-1 justify-between w-full h-[600px] border-2 border-gray-900"
@@ -81,8 +97,7 @@ function Auth() {
             <input
               className="w-full h-[60px] border-2 border-t-0 border-l-0 border-r-0 border-gray-900 px-3 focus:outline-none"
               placeholder="コード入力"
-              {...register("referral_code", {
-              })}
+              {...register("referral_code", {})}
             />
 
             <button className="w-full h-[60px] border-2 border-gray-900 hover:bg-[#eeff00]">

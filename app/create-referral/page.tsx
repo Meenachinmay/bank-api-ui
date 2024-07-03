@@ -16,7 +16,7 @@ function CreateReferral() {
     }
     try {
       const response = await fetch(
-        `http://134.209.251.201:8080/referral/account/${user}`,
+        `https://mahitech.org/referral/account/${user}`,
         {
           method: "POST",
           headers: {

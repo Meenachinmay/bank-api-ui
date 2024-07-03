@@ -26,7 +26,7 @@ function Account() {
   async function refreshExtraInterest() {
     try {
        const response = await fetch(
-         `http://134.209.251.201:8080/referral/calculate/${user}`,
+         `https://mahitech.org/referral/calculate/${user}`,
          {
            method: "GET",
            headers: {

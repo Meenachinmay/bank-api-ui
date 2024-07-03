@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { notosansjp } from "@/fonts";
 
+import { Toaster } from "react-hot-toast";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,7 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={notosansjp.className}>{children}</body>
+      <body className={notosansjp.className}>
+        <Toaster />
+        {children}
+      </body>
     </html>
   );
 }
