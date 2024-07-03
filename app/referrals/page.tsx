@@ -30,7 +30,7 @@ function Referrals() {
       if (!user) return;
       try {
         const response = await fetch(
-          `http://localhost:4000/referral-codes?account=${user}`,
+          `http://134.209.251.201:8080/referral-codes?account=${user}`,
           {
             method: "GET",
             headers: {

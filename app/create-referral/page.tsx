@@ -16,7 +16,7 @@ function CreateReferral() {
     }
     try {
       const response = await fetch(
-        `http://localhost:4000/referral/account/${user}`,
+        `http://134.209.251.201:8080/referral/account/${user}`,
         {
           method: "POST",
           headers: {
@@ -30,6 +30,7 @@ function CreateReferral() {
         return;
       }
       const result = await response.json();
+      console.log(result);
       if (result.referral_code) {
         setCode(result.referral_code);
         setTimeout(() => {

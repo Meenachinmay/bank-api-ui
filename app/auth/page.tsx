@@ -23,7 +23,7 @@ function Auth() {
   const onSubmit = async (data: AuthProps) => {
     data.currency = "YEN";
     try {
-      const response = await fetch("http://localhost:4000/accounts", {
+      const response = await fetch(`http://134.209.251.201:8080/accounts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

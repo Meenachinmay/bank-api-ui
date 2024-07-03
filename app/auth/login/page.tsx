@@ -24,7 +24,7 @@ function Login() {
 
   const onSubmit = async (data: LoginProps) => {
     try {
-      const response = await fetch("http://localhost:4000/accounts/login", {
+      const response = await fetch(`http://134.209.251.201:8080/accounts/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

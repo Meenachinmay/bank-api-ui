@@ -26,7 +26,7 @@ function Account() {
   async function refreshExtraInterest() {
     try {
        const response = await fetch(
-         `http://localhost:4000/referral/calculate/${user}`,
+         `http://134.209.251.201:8080/referral/calculate/${user}`,
          {
            method: "GET",
            headers: {
@@ -60,13 +60,16 @@ function Account() {
     async function fetchAccount() {
       if (!user) return;
       try {
-        const response = await fetch(`http://localhost:4000/accounts/${user}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          `http://134.209.251.201:8080/accounts/${user}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         if (!response.ok) {
           console.error(">>> ERROR CALLING API");
